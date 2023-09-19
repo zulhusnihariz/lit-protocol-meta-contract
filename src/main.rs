@@ -5,7 +5,6 @@ mod data;
 mod defaults;
 
 use std::collections::HashMap;
-use serde::Deserialize;
 use data::DataStructFork;
 use defaults::DEFAULT_IPFS_MULTIADDR;
 use defaults::DEFAULT_TIMEOUT_SEC;
@@ -80,7 +79,7 @@ pub fn on_execute(
         alias: transaction.alias,
         content: transaction.data,
         version: transaction.version,
-        loose: 1
+        loose: 0
     });
 
     MetaContractResult {
@@ -100,64 +99,6 @@ pub fn on_mint(contract: MetaContract, data_key: String, token_id: String, data:
     let mut error: Option<String> = None;
     let mut finals: Vec<FinalMetadata> = vec![];
     // extract out data
-    if data.len() > 0 {
-
-        let data_bytes = &hex::decode(&data);
-
-        match data_bytes {
-          Ok(decoded) => {
-            let param_types = vec![
-              ParamType::String,
-              ParamType::String,
-              ParamType::String,
-            ];
-
-            let results = decode(&param_types, decoded);
-
-            match results {
-              Ok(result) => {
-                if result.len() == 3 {
-                  
-                  let ipfs_multiaddr = result[1].clone().to_string();
-                  let cid = result[2].clone().to_string();
-                  
-                  let datasets = get(cid, ipfs_multiaddr, 0);
-                  let result: Result<Vec<DataStructFork>, serde_json::Error> =
-                      serde_json::from_str(&datasets);
-
-                  match result {
-                      Ok(datas) => {
-
-                          for data in datas {
-
-                              finals.push(FinalMetadata {
-                                  public_key: data.owner,
-                                  alias: "".to_string(),
-                                  content: data.cid,
-                                  version: data.version,
-                                  loose: 0,
-                              });
-
-                          }
-                      }
-                      Err(e) => error = Some(format!("Invalid data structure: {}", e.to_string())),
-                  }
-                }
-              },
-              Err(e) => error = Some(format!("Invalid data structure: {}", e.to_string())),
-            }
-          },
-          Err(e) => error = Some(format!("Invalid data structure: {}", e.to_string())),
-        }
-    }
-
-    if !error.is_none() {
-      return MetaContractResult {
-        result: false,
-        metadatas: Vec::new(),
-        error_string: error.unwrap().to_string(),
-      };
-    }
 
     MetaContractResult {
         result: true,
