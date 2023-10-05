@@ -79,11 +79,10 @@ impl AuthSig {
   pub fn is_any_empty_field(&self) -> bool {
     self.sig.is_empty() || self.derived_via.is_empty() || self.signed_message.is_empty() || self.address.is_empty()
   }
-
 }
 
 #[derive(Debug, Default, Deserialize)]
-pub struct NousAiMetadata {
+pub struct LitProtocolMetadata {
   pub auth_sig: AuthSig,
   pub encrypted_symmetric_key:String,
   pub encrypted_string: String

@@ -15,8 +15,8 @@ use marine_rs_sdk::WasmLoggerBuilder;
 use types::MetaContract;
 use types::Metadata;
 use types::Transaction;
-use types::{FinalMetadata, MetaContractResult, NousAiMetadata};
-use ethabi::{decode, ParamType};
+use types::{ FinalMetadata, MetaContractResult, LitProtocolMetadata };
+use ethabi::{ decode, ParamType };
 
 module_manifest!();
 
@@ -36,7 +36,7 @@ pub fn on_execute(
     let mut finals: Vec<FinalMetadata> = vec![];
 
     
-    let serde_metadata: Result<NousAiMetadata, serde_json::Error> = serde_json::from_str(&transaction.data.clone());
+    let serde_metadata: Result<LitProtocolMetadata, serde_json::Error> = serde_json::from_str(&transaction.data.clone());
 
     match serde_metadata {
       Ok(metadata) =>{ 
