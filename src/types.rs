@@ -68,22 +68,28 @@ pub struct SerdeMetadata {
 }
 
 #[derive(Debug, Default, Deserialize)]
-pub struct AuthSig {
-  pub sig: String,
-  pub derived_via: String,
-  pub signed_message: String,
-  pub address: String
-}
-
-impl AuthSig {
-  pub fn is_any_empty_field(&self) -> bool {
-    self.sig.is_empty() || self.derived_via.is_empty() || self.signed_message.is_empty() || self.address.is_empty()
-  }
+pub struct ReturnValueTest {
+  pub key: Option<String>,
+  pub comparator: String,
+  pub value: String,
 }
 
 #[derive(Debug, Default, Deserialize)]
+pub struct AccessControlConditions {
+    pub chain: String,
+    pub return_value_test: ReturnValueTest,
+    pub condition_type: Option<String>,
+    pub method: Option<String>,
+    pub params: Option<Vec<String>>,
+    pub operator: Option<String>,
+    pub contract_address: Option<String>,
+    pub standard_contract_type: Option<String>,
+    pub parameters: Option<Vec<String>>,
+} 
+
+#[derive(Debug, Default, Deserialize)]
 pub struct LitProtocolMetadata {
-  pub auth_sig: AuthSig,
+  pub access_control_conditions: Vec<AccessControlConditions>,
   pub encrypted_symmetric_key:String,
   pub encrypted_string: String
 }

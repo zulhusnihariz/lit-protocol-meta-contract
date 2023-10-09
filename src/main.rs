@@ -57,11 +57,11 @@ pub fn on_execute(
           };
         }
 
-        if metadata.auth_sig.is_any_empty_field() { 
+        if metadata.access_control_conditions.is_empty() { 
           return MetaContractResult {
             result: false,
             metadatas: Vec::new(),
-            error_string: "auth_signed fields cannot be empty".to_string(),
+            error_string: "chain & return_value_test fields cannot be empty".to_string(),
           };
         }
       }
